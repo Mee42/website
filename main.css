@@ -1,0 +1,11 @@
+/* web.simmons.edu/~grabiner/comm244/weekfour/code-test.html */
+pre { 
+	background-color: #eee;
+	border: 1px solid #999;
+	display: block;
+	padding: 10px;
+	font-size: 120%;
+}
+body {
+	line-height: 140%;
+}
