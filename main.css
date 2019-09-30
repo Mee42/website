@@ -7,4 +7,45 @@ pre {
 }
 body {
 	line-height: 140%;
+	margin: 0;
+}
+
+.content {
+	margin-top: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.top-bar {
+	background: lightgray;
+	border-bottom: 2px solid black;
+}
+
+.top-bar a {
+	color: black;
+	font-size: 120%;
+	background: lightgray;
+	border: 0 solid #3e3;
+	padding: 20px 30px;
+	transition: all 0.3s;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	cursor: pointer;
+}
+
+
+.top-bar a:hover {
+	background: black;
+	color: lightgray;
+}
+
+h1 {
+	text-align: center;
+	color: black;
+	font-weight: bold;
+}
+h2 {
+	text-align: center;
+	color: black;
+	font-weight: normal;
 }
