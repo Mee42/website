@@ -10,6 +10,8 @@ body {
 	margin: 0;
 }
 
+
+
 .content {
 	margin-top: 10px;
 	margin-left: 20px;
@@ -38,6 +40,15 @@ body {
 	background: black;
 	color: lightgray;
 }
+.top-bar a {
+	color: black;
+}
+.top-bar a:hover:visited {
+	color: lightgray;
+}
+.top-bar a:visited {
+	color: black;
+}
 
 h1 {
 	text-align: center;
@@ -50,17 +61,33 @@ h2 {
 	font-weight: normal;
 }
 
-.lol-print {
+.plaintext-print {
 	background-color: #000;
 	border: 0 solid #888;
 	display: block;
-	padding: 15px;
 	font-size: 120%;
-	margin-left: 0;
-	margin-right: 0;
 	text-align: center;
 	color: #F1F2F3;
 	font-family: monospace;
 	height: 100px;
-	margin-top: 15px;
+	margin: 15px 0 0;
+	padding: 15px 15px 0;
 }
+
+inline {
+	background-color: lightgray;
+	padding: 3px;
+	font-family: monospace;
+	font-size: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
