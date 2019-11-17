@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="us">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>Mee42</title>
+    <link href="/main.css" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="blog.css" media="screen" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="/index.html">Mee42.dev</a>
+    <a href="/about.html">About</a>
+    <a href="/about.html#contact">Contact</a>
+    <a href="/projects.html">Projects</a>
+    <a href="/blog/blog.html">Blog</a>
+</div>
+<div class="content">
+    <h1>Vision Processing in OpenCV</h1>
+    <p>
+        I had the pleasure of writing (still in the process, at the time of writing this) a vision processing library
+        for my school's robotics team.
+        The main library used was <a href="https://opencv.org/">OpenCV</a>, something that is widely used for image
+        processing.
+        My FRC team, 623, has been trying to use vision processing to enhance our robot's performance on the field for a
+        couple years now,
+        and we are attempting to switch to proper vision control.
+        It's very much a work it progress, but I thought I'd start to write something up anyway.
+    </p>
+    <h3>The Problem:</h3>
+    <p title="Sidenote: due to legal reasons, in all official definitions it was refereed to as hook-and-loop tape">
+        Our robot needed to place a hatch onto some felcro. (the hatch had white felcro around the outside).
+        This requires driving up to it, making sure that the robot is rotated in the right way (an annoying 30&deg;
+        angle),
+        and also aligned horizontally, within a few inches.
+    </p>
+    <img alt="hatch" src="/res/hatch.jpg" title="I don't really like these hatches" width="150px"/>
+    <p>
+        Now, normally, this is done with a driver.
+        It can be hard for a human to align with accuracy, and a lot time was wasted when we missed the felcro.
+    </p>
+    <h3>The Solution:</h3>
+    <ul>
+        <li>Put a camera on the robot.</li>
+        <li>Figure out where the robot is on the field based on vision input.</li>
+        <li>Drive to that position with accuracy (includes rotation)</li>
+        <li>Drive forward and place the hatch perfectly</li>
+    </ul>
+    <p>
+        Each of these steps is difficult in it's own way, except maybe the first.
+        Properly finding robot position is something that I personally focused on, and will be the main topic of this
+        article.
+        Moving the robot to the right position with accuracy is a fun challenge of PID loops and encoders.
+        Driving forwards and placing hatches should in theory be trivial, but that's something we haven't gotten to test
+        yet.
+    </p>
+    <p>
+        Let's start with vision processing. To help us, we do get strips of retro-reflective tape where we need to place
+        hatches.
+        These piece of tape, about 2 by 5 inches, reflect light at the same angle it was hit at.
+        The same technology is used in road signs, to make it more visible to drivers.
+        <a href="https://media.screensteps.com/images/Wpilib/288983/1/rendered/621F2EEB-8B59-40EB-8A29-6057EA7807A7.png">Here's
+            a quick diagram of it</a>
+        We can isolate this using HSV filtering, and find the contours, using methods like
+        <inline>cv::inRange</inline>
+        and
+        <inline>cv::findContours</inline>
+        easily enough.
+        The hardest part of this is translating 2D pixel-plane coordinates (the X and Y of the vision targets)
+        into 3D world coordinates, which is X, Y, and Z.
+    </p>
+    <p>
+        The fundamental bases of our vision code is <a href="https://en.wikipedia.org/wiki/Perspective-n-Point">Perspective-n-Point</a>.
+        OpenCV has a nice method,
+        <inline><a
+                href="https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#bool%20solvePnP(InputArray%20objectPoints,%20InputArray%20imagePoints,%20InputArray%20cameraMatrix,%20InputArray%20distCoeffs,%20OutputArray%20rvec,%20OutputArray%20tvec,%20bool%20useExtrinsicGuess,%20int%20flags)">
+            cv::solvePnP</a></inline>
+        , which does a lot of the heavy lifting.
+        However, using this method requires a partial understanding of it - something that I really struggled with.
+    </p>
+    <p>
+        There's a couple of inputs to this method.
+        One is the intrinsic parameters of the camera - stuff like fov and lense distortion, stored in special matrixes
+        (distortion coefficients, and the camera matrix).
+        Another is a list of image points - the 2D coordinates that you found from the camera input image.
+        The weird input is the list of object points, which are 3D points that correspond to the 2D points you also pass
+        in.
+        This doesn't make sense initially - shouldn't the method <i>return</i> the 3D points?
+    </p>
+    <p>
+        Well, in turns out that it doesn't return the 3D coordinates -
+        it return the translation and rotation vector (
+        <inline>tvec</inline>
+        and
+        <inline>rvec</inline>
+        ) that you would need to get to the 3D coordinates.
+        Now, if you tell it that the target is at 0,0,0 in the real world,
+        you'll get values in
+        <inline>tvec</inline>
+        and
+        <inline>rvec</inline>
+        that <span title="Again - isn't intuitive">describe how to distort reality to get to that point</span>.
+        Those values can be used to find the world X, Y, and Z values, which is what's really useful when autonomously
+        driving robots.
+    </p>
+    <p>
+        I'm not going to get into the math of how to do that,
+        because <a href="https://ligerbots.org/docs/whitepapers/LigerBots_Vision_Whitepaper.pdf">Team 2877's paper</a>
+        does a better job explaining it then I could. I based a lot of my code off of their code.
+        You can find my (at this moment in time incomplete) code at <a
+            href="https://www.github.com/CougarRobotics623/vision-pipeline">the GitHub repo</a>
+    </p>
+    <p>
+
+    </p>
+</div>
+<!--<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sons-of-obsidian&lang=kotlin"></script>-->
+</body>
+</html>
+

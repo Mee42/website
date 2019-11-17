@@ -82,8 +82,20 @@ inline {
 }
 
 
+a {
+	text-decoration: underline;
+	color: black;
+	transition: color 0.3s;
+}
+
+a:hover {
+	color: #027375;
+}
 
 
+a:visited:not(:hover) {
+	color: black;
+}
 
 
 
