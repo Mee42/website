@@ -1,0 +1,15 @@
+
+div.content {
+    max-width: 750px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 100px;
+}
+
+p {
+    text-indent: 2em;
+}
