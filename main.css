@@ -29,7 +29,7 @@ body {
 	background: lightgray;
 	border: 0 solid #3e3;
 	padding: 20px 30px;
-	transition: all 0.3s;
+	transition: color 0.3s;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
@@ -54,12 +54,16 @@ body {
 h1 {
 	text-align: center;
 	color: black;
-	font-weight: bold;
+	font-weight: bold; 
 }
-h2 {
-	text-align: center;
+h2 { 
+    text-align: center;
 	color: black;
 	font-weight: normal;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5em;
 }
 
 .plaintext-print {
